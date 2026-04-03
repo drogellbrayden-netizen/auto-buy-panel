@@ -1,47 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <title>Nexaa Shop</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
+body{
+  margin:0;
+  font-family:Arial;
   background: radial-gradient(circle at top, #1b1f3a, #0b0f1a);
-  color: white;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color:white;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-.container {
-  text-align: center;
-  padding: 40px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 15px;
-  width: 320px;
+.card{
+  background:rgba(255,255,255,0.06);
+  padding:40px;
+  border-radius:16px;
+  text-align:center;
+  width:320px;
+  box-shadow:0 0 30px rgba(0,0,0,0.4);
 }
 
-.btn {
-  display: block;
-  margin: 10px 0;
-  padding: 12px;
-  background: #4c6fff;
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
+.btn{
+  display:block;
+  margin:10px 0;
+  padding:12px;
+  background:#4c6fff;
+  color:white;
+  text-decoration:none;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.btn:hover{
+  background:#3a56d6;
 }
 </style>
 
 </head>
-
 <body>
 
-<div class="container">
+<div class="card">
   <h1>🚀 Nexaa Shop</h1>
-  <p>Welcome</p>
+  <p>Modern trading panel</p>
 
   <a class="btn" href="/login.html">Login</a>
   <a class="btn" href="/register.html">Register</a>

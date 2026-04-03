@@ -1,15 +1,68 @@
-<h2>Login</h2>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
 
-<input id="u" placeholder="username">
-<input id="p" type="password" placeholder="password">
-<button onclick="login()">Login</button>
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card{
+  background:#141a2a;
+  padding:30px;
+  border-radius:12px;
+  width:300px;
+  text-align:center;
+}
+
+input{
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#4c6fff;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Login</h2>
+
+  <input id="u" placeholder="username">
+  <input id="p" type="password" placeholder="password">
+
+  <button onclick="login()">Login</button>
+</div>
 
 <script>
 async function login(){
-  const res = await fetch("/login", {
+  const res = await fetch("/login",{
     method:"POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
       username:u.value,
       password:p.value
     })
@@ -18,11 +71,14 @@ async function login(){
   const data = await res.json();
 
   if(data.token){
-    localStorage.setItem("token", data.token);
-    alert("Logged in!");
-    window.location = "/dashboard.html";
+    localStorage.setItem("token",data.token);
+    localStorage.setItem("userId",data.userId);
+    window.location="/dashboard.html";
   } else {
     alert(data.error);
   }
 }
 </script>
+
+</body>
+</html>

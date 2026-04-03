@@ -1,7 +1,60 @@
-<h1>Products</h1>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Products</title>
 
-<div style="border:1px solid #ccc;padding:10px;">
-  <h3>Product 1</h3>
-  <p>Cool item</p>
-  <button>Buy</button>
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+}
+
+.header{
+  padding:20px;
+  text-align:center;
+}
+
+.grid{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:#141a2a;
+  padding:20px;
+  border-radius:12px;
+  width:200px;
+  text-align:center;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Products</h1>
 </div>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>Item 1</h3>
+    <p>$10</p>
+    <button>Buy</button>
+  </div>
+
+  <div class="card">
+    <h3>Item 2</h3>
+    <p>$25</p>
+    <button>Buy</button>
+  </div>
+
+</div>
+
+</body>
+</html>
