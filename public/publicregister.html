@@ -1,0 +1,20 @@
+<h2>Register</h2>
+
+<input id="user" placeholder="username">
+<input id="pass" placeholder="password" type="password">
+<button onclick="register()">Register</button>
+
+<script>
+async function register() {
+  const res = await fetch("/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: user.value,
+      password: pass.value
+    })
+  });
+
+  alert(await res.text());
+}
+</script>

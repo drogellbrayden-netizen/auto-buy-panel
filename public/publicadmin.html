@@ -1,0 +1,22 @@
+<h1>Admin Panel</h1>
+
+<input id="u" placeholder="username">
+<input id="a" placeholder="amount">
+
+<button onclick="add()">Add Balance</button>
+
+<script>
+async function add(){
+  const res = await fetch("/admin/add-balance", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      username:u.value,
+      amount:a.value,
+      adminKey:"vdk"
+    })
+  });
+
+  alert("Done");
+}
+</script>
