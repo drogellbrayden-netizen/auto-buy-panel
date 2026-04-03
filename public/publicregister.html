@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Register</title>
+<title>Register - Nexaa</title>
+
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#0b0f1a;
+  background: radial-gradient(circle at top, #1b1f3a, #0b0f1a);
   color:white;
   display:flex;
   justify-content:center;
@@ -15,52 +16,94 @@ body{
 }
 
 .card{
-  background:#141a2a;
+  background:rgba(255,255,255,0.06);
   padding:30px;
-  border-radius:12px;
-  width:300px;
+  border-radius:16px;
+  width:320px;
   text-align:center;
+  box-shadow:0 0 30px rgba(0,0,0,0.5);
 }
 
-input,button{
+h2{
+  margin-bottom:15px;
+}
+
+input{
   width:100%;
   margin:8px 0;
-  padding:10px;
-  border-radius:8px;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  background:#0f1424;
+  color:white;
 }
 
 button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
   background:#4c6fff;
   border:none;
   color:white;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  background:#3a56d6;
+}
+
+small{
+  display:block;
+  margin-top:10px;
+  opacity:0.7;
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="card">
-  <h2>Register</h2>
+  <h2>🧾 Create Account</h2>
 
-  <input id="u" placeholder="username">
-  <input id="p" type="password" placeholder="password">
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
 
-  <button onclick="reg()">Create Account</button>
+  <button onclick="register()">Register</button>
+
+  <small id="msg"></small>
 </div>
 
 <script>
-async function reg(){
-  await fetch("/register",{
+async function register(){
+  const msg = document.getElementById("msg");
+
+  const res = await fetch("/register",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
-      username:u.value,
-      password:p.value
+      username:document.getElementById("username").value,
+      password:document.getElementById("password").value
     })
   });
 
-  alert("Account created!");
-  window.location="/login.html";
+  const data = await res.json();
+
+  if(res.ok){
+    msg.innerText = "Account created! Redirecting...";
+    msg.style.color = "lightgreen";
+
+    setTimeout(()=>{
+      window.location = "/login.html";
+    }, 1200);
+
+  } else {
+    msg.innerText = data.error || "Something went wrong";
+    msg.style.color = "red";
+  }
 }
 </script>
 
