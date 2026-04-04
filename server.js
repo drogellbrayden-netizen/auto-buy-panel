@@ -11,8 +11,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-// SERVE PUBLIC FILES
 app.use(express.static(path.join(__dirname, "public")));
 
 // ===== MONGO =====
@@ -55,18 +53,10 @@ app.post("/login", async (req, res) => {
   const match = await bcrypt.compare(password, user.password);
   if (!match) return res.json({ error: "Wrong password" });
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-
-  res.json({ token, userId: user._id });
+  res.json({ userId: user._id });
 });
 
-// ===== GET USER =====
-app.get("/me/:id", async (req, res) => {
-  const user = await User.findById(req.params.id);
-  res.json(user);
-});
-
-// ===== BUY SYSTEM =====
+// ===== BUY =====
 app.post("/buy", async (req, res) => {
   const { userId, product, price } = req.body;
 
@@ -86,17 +76,27 @@ app.post("/buy", async (req, res) => {
   res.json({
     success: true,
     key,
-    newBalance: user.balance
+    balance: user.balance
   });
+});
+
+// ===== ADMIN LOGIN =====
+app.post("/admin/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (
+    username === process.env.ADMIN_USER &&
+    password === process.env.ADMIN_PASS
+  ) {
+    return res.json({ success: true });
+  }
+
+  res.json({ error: "Wrong admin login" });
 });
 
 // ===== ADMIN ADD BALANCE =====
 app.post("/admin/add", async (req, res) => {
-  const { username, amount, key } = req.body;
-
-  if (key !== process.env.ADMIN_USER) {
-    return res.json({ error: "Wrong admin key" });
-  }
+  const { username, amount } = req.body;
 
   const user = await User.findOne({ username });
   if (!user) return res.json({ error: "User not found" });
@@ -105,11 +105,6 @@ app.post("/admin/add", async (req, res) => {
   await user.save();
 
   res.json({ success: true });
-});
-
-// ===== HOME =====
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // ===== START =====

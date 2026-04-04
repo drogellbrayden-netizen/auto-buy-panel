@@ -1,22 +1,102 @@
-<h1>Admin Panel</h1>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin</title>
 
-<input id="u" placeholder="username">
-<input id="a" placeholder="amount">
+<style>
+body{
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+  display:flex;
+}
 
-<button onclick="add()">Add Balance</button>
+.sidebar{
+  width:200px;
+  background:#11172a;
+  height:100vh;
+  padding:20px;
+}
+
+.main{
+  flex:1;
+  padding:20px;
+}
+
+.card{
+  background:#141a2a;
+  padding:20px;
+  border-radius:10px;
+  width:300px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+  <a href="/products.html">Products</a>
+</div>
+
+<div class="main">
+
+<div id="loginBox" class="card">
+  <h2>Admin Login</h2>
+  <input id="user"><br><br>
+  <input id="pass" type="password"><br><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<div id="panel" class="card" style="display:none;">
+  <h2>Add Balance</h2>
+  <input id="u2"><br><br>
+  <input id="amt"><br><br>
+  <button onclick="add()">Add</button>
+</div>
+
+</div>
 
 <script>
-async function add(){
-  const res = await fetch("/admin/add-balance", {
+async function login(){
+  const res = await fetch("/admin/login",{
     method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-      username:u.value,
-      amount:a.value,
-      adminKey:"vdk"
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:user.value,
+      password:pass.value
     })
   });
 
-  alert("Done");
+  const data = await res.json();
+
+  if(data.success){
+    loginBox.style.display="none";
+    panel.style.display="block";
+  } else {
+    alert(data.error);
+  }
+}
+
+async function add(){
+  const res = await fetch("/admin/add",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:u2.value,
+      amount:Number(amt.value)
+    })
+  });
+
+  const data = await res.json();
+
+  if(data.success){
+    alert("Added!");
+  } else {
+    alert(data.error);
+  }
 }
 </script>
+
+</body>
+</html>
