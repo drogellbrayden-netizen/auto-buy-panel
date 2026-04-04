@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Products</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+  display:flex;
+}
+
+.sidebar{
+  width:200px;
+  background:#11172a;
+  height:100vh;
+  padding:20px;
+}
+
+.sidebar a{
+  display:block;
+  margin:10px 0;
+  color:white;
+  text-decoration:none;
+}
+
+.main{
+  flex:1;
+  padding:20px;
+}
+
+.card{
+  background:#141a2a;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
+}
+
+button{
+  padding:10px;
+  background:#4c6fff;
+  border:none;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <a href="/login.html">Login</a>
+  <a href="/register.html">Register</a>
+  <a href="/products.html">Products</a>
+  <a href="/admin.html">Admin</a>
+</div>
+
+<div class="main">
+  <h1>Products</h1>
+
+  <div class="card">
+    <h3>Basic Bot</h3>
+    <p>$10</p>
+    <button onclick="buy('Basic',10)">Buy</button>
+  </div>
+
+  <div class="card">
+    <h3>Pro Bot</h3>
+    <p>$25</p>
+    <button onclick="buy('Pro',25)">Buy</button>
+  </div>
+</div>
+
+<script>
+async function buy(name, price){
+  const userId = localStorage.getItem("userId");
+
+  if(!userId){
+    alert("Login first");
+    return;
+  }
+
+  const res = await fetch("/buy",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ userId, product:name, price })
+  });
+
+  const data = await res.json();
+
+  if(data.success){
+    alert("Key: " + data.key + "\\nBalance: $" + data.balance);
+  } else {
+    alert(data.error);
+  }
+}
+</script>
+
+</body>
+</html>
