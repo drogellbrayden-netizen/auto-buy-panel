@@ -13,14 +13,16 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static("public"));
 
-// CONNECT DB
+// 🔥 THIS IS THE IMPORTANT PART
+app.use(express.static(path.join(__dirname, "public")));
+
+// ===== CONNECT MONGO =====
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch(err => console.log("Mongo Error:", err));
 
-// REGISTER
+// ===== REGISTER =====
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
@@ -29,17 +31,21 @@ app.post("/register", async (req, res) => {
 
   const hash = await bcrypt.hash(password, 10);
 
-  await User.create({ username, password: hash, balance: 0 });
+  await User.create({
+    username,
+    password: hash,
+    balance: 0
+  });
 
   res.json({ success: true });
 });
 
-// LOGIN
+// ===== LOGIN =====
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
-  if (!user) return res.json({ error: "No user" });
+  if (!user) return res.json({ error: "User not found" });
 
   const match = await bcrypt.compare(password, user.password);
   if (!match) return res.json({ error: "Wrong password" });
@@ -49,33 +55,20 @@ app.post("/login", async (req, res) => {
   res.json({ token, userId: user._id });
 });
 
-// GET USER
+// ===== GET USER =====
 app.get("/me/:id", async (req, res) => {
   const user = await User.findById(req.params.id);
   res.json(user);
 });
 
-// ADMIN ADD BALANCE
-app.post("/admin/add", async (req, res) => {
-  const { username, amount, key } = req.body;
-
-  if (key !== process.env.ADMIN_USER)
-    return res.json({ error: "Not admin" });
-
-  const user = await User.findOne({ username });
-  if (!user) return res.json({ error: "No user" });
-
-  user.balance += Number(amount);
-  await user.save();
-
-  res.json({ success: true });
-});
-
-// HOME PAGE FIX (THIS IS THE IMPORTANT PART)
+// ===== FORCE LOAD INDEX PAGE =====
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// START SERVER
+// ===== START SERVER =====
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server running on " + PORT));
+
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
+});
