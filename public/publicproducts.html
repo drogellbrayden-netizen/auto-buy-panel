@@ -1,138 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Nexaa Products</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0b0f1a;
-  color:white;
-}
-
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 40px;
-  background:#11172a;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-.logo{
-  font-size:20px;
-  font-weight:bold;
-}
-
-.nav a{
-  margin-left:15px;
-  color:white;
-  text-decoration:none;
-  opacity:0.8;
-}
-
-.nav a:hover{
-  opacity:1;
-}
-
-/* PRODUCTS GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
-  gap:20px;
-  padding:30px;
-}
-
-/* PRODUCT CARD */
-.card{
-  background:#141a2a;
-  padding:20px;
-  border-radius:12px;
-  text-align:center;
-  transition:0.2s;
-}
-
-.card:hover{
-  transform:translateY(-5px);
-}
-
-.title{
-  font-size:18px;
-  margin-bottom:10px;
-}
-
-.price{
-  font-size:16px;
-  margin:10px 0;
-  opacity:0.8;
-}
-
-/* BUTTON */
-button{
-  padding:10px;
-  width:100%;
-  border:none;
-  border-radius:8px;
-  background:#4c6fff;
-  color:white;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-button:hover{
-  background:#3a56d6;
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="header">
-  <div class="logo">🚀 Nexaa Shop</div>
-
-  <div class="nav">
-    <a href="/">Home</a>
-    <a href="/login.html">Login</a>
-    <a href="/register.html">Register</a>
-  </div>
-</div>
-
-<div class="grid">
-
-  <div class="card">
-    <div class="title">Basic Bot</div>
-    <div class="price">$10</div>
-    <button onclick="buy('Basic Bot',10)">Buy</button>
-  </div>
-
-  <div class="card">
-    <div class="title">Pro Bot</div>
-    <div class="price">$25</div>
-    <button onclick="buy('Pro Bot',25)">Buy</button>
-  </div>
-
-  <div class="card">
-    <div class="title">Ultra Bot</div>
-    <div class="price">$50</div>
-    <button onclick="buy('Ultra Bot',50)">Buy</button>
-  </div>
-
-  <div class="card">
-    <div class="title">VIP Access</div>
-    <div class="price">$100</div>
-    <button onclick="buy('VIP Access',100)">Buy</button>
-  </div>
-
-</div>
-
 <script>
-function buy(name, price){
-  alert("You clicked buy on " + name + " ($" + price + ")");
+async function buy(name, price){
+  const userId = localStorage.getItem("userId");
+
+  if(!userId){
+    alert("Login first!");
+    return;
+  }
+
+  const res = await fetch("/buy",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      userId,
+      product:name,
+      price
+    })
+  });
+
+  const data = await res.json();
+
+  if(data.success){
+    alert("✅ Key: " + data.key + "\nBalance: $" + data.newBalance);
+  } else {
+    alert(data.error);
+  }
 }
 </script>
-
-</body>
-</html>
