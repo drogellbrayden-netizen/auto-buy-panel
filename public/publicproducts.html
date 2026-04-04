@@ -14,13 +14,15 @@ body{
 .header{
   padding:20px;
   text-align:center;
+  font-size:24px;
 }
 
 .grid{
   display:flex;
   justify-content:center;
-  gap:20px;
   flex-wrap:wrap;
+  gap:20px;
+  padding:20px;
 }
 
 .card{
@@ -29,6 +31,25 @@ body{
   border-radius:12px;
   width:200px;
   text-align:center;
+  box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+.price{
+  margin:10px 0;
+  font-weight:bold;
+}
+
+button{
+  padding:8px 12px;
+  background:#4c6fff;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#3a56d6;
 }
 </style>
 
@@ -36,25 +57,35 @@ body{
 
 <body>
 
-<div class="header">
-  <h1>Products</h1>
-</div>
+<div class="header">🛍️ Products</div>
 
 <div class="grid">
 
   <div class="card">
-    <h3>Item 1</h3>
-    <p>$10</p>
-    <button>Buy</button>
+    <h3>Basic Bot</h3>
+    <div class="price">$10</div>
+    <button onclick="buy('Basic Bot',10)">Buy</button>
   </div>
 
   <div class="card">
-    <h3>Item 2</h3>
-    <p>$25</p>
-    <button>Buy</button>
+    <h3>Pro Bot</h3>
+    <div class="price">$25</div>
+    <button onclick="buy('Pro Bot',25)">Buy</button>
+  </div>
+
+  <div class="card">
+    <h3>Ultra Bot</h3>
+    <div class="price">$50</div>
+    <button onclick="buy('Ultra Bot',50)">Buy</button>
   </div>
 
 </div>
+
+<script>
+function buy(name, price){
+  alert("Bought " + name + " for $" + price);
+}
+</script>
 
 </body>
 </html>
