@@ -12,8 +12,8 @@ body{
 }
 
 .header{
-  padding:20px;
   text-align:center;
+  padding:20px;
   font-size:24px;
 }
 
@@ -31,7 +31,6 @@ body{
   border-radius:12px;
   width:200px;
   text-align:center;
-  box-shadow:0 0 10px rgba(0,0,0,0.4);
 }
 
 .price{
@@ -64,26 +63,26 @@ button:hover{
   <div class="card">
     <h3>Basic Bot</h3>
     <div class="price">$10</div>
-    <button onclick="buy('Basic Bot',10)">Buy</button>
+    <button onclick="buy('Basic Bot')">Buy</button>
   </div>
 
   <div class="card">
     <h3>Pro Bot</h3>
     <div class="price">$25</div>
-    <button onclick="buy('Pro Bot',25)">Buy</button>
+    <button onclick="buy('Pro Bot')">Buy</button>
   </div>
 
   <div class="card">
     <h3>Ultra Bot</h3>
     <div class="price">$50</div>
-    <button onclick="buy('Ultra Bot',50)">Buy</button>
+    <button onclick="buy('Ultra Bot')">Buy</button>
   </div>
 
 </div>
 
 <script>
-function buy(name, price){
-  alert("Bought " + name + " for $" + price);
+function buy(item){
+  alert(item + " purchased (demo)");
 }
 </script>
 

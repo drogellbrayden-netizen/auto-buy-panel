@@ -30,6 +30,8 @@ input{
   border-radius:8px;
   border:none;
   outline:none;
+  background:#0f1424;
+  color:white;
 }
 
 button{
@@ -47,10 +49,9 @@ button:hover{
   background:#3a56d6;
 }
 
-p{
+.msg{
   margin-top:10px;
   font-size:12px;
-  opacity:0.7;
 }
 </style>
 
@@ -61,12 +62,12 @@ p{
 <div class="card">
   <h2>Create Account</h2>
 
-  <input id="u" placeholder="username">
-  <input id="p" type="password" placeholder="password">
+  <input id="u" placeholder="Username">
+  <input id="p" type="password" placeholder="Password">
 
   <button onclick="register()">Register</button>
 
-  <p id="msg"></p>
+  <div class="msg" id="msg"></div>
 </div>
 
 <script>
