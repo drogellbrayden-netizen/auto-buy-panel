@@ -1,94 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Auto Buy Panel</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding-top: 60px;
-    }
+<title>Nexaa Shop</title>
 
-    input, button {
-      padding: 10px;
-      margin: 5px;
-      border-radius: 6px;
-      border: none;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+  display:flex;
+}
 
-    button {
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  background:#11172a;
+  height:100vh;
+  padding:20px;
+  box-shadow:2px 0 10px rgba(0,0,0,0.5);
+}
 
-    .box {
-      margin: 20px auto;
-      width: 300px;
-      padding: 20px;
-      background: #1e293b;
-      border-radius: 10px;
-    }
-  </style>
+.sidebar h2{
+  margin-bottom:30px;
+}
+
+.sidebar a{
+  display:block;
+  margin:12px 0;
+  color:white;
+  text-decoration:none;
+  padding:10px;
+  border-radius:8px;
+  transition:0.2s;
+}
+
+.sidebar a:hover{
+  background:#1a2240;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  padding:50px;
+}
+
+/* CARD */
+.card{
+  background:#141a2a;
+  padding:25px;
+  border-radius:12px;
+  max-width:400px;
+}
+</style>
 </head>
 
 <body>
-  <h1>Auto Buy Panel 🚀</h1>
 
-  <div class="box">
-    <h2>Register</h2>
-    <input id="ruser" placeholder="username">
-    <input id="rpass" type="password" placeholder="password">
-    <button onclick="register()">Register</button>
+<div class="sidebar">
+  <h2>🚀 Nexaa</h2>
+
+  <a href="/login.html">Login</a>
+  <a href="/register.html">Register</a>
+  <a href="/products.html">Products</a>
+  <a href="/admin.html">Admin</a>
+</div>
+
+<div class="main">
+  <div class="card">
+    <h1>Welcome</h1>
+    <p>Select a page from the sidebar.</p>
   </div>
+</div>
 
-  <div class="box">
-    <h2>Login</h2>
-    <input id="luser" placeholder="username">
-    <input id="lpass" type="password" placeholder="password">
-    <button onclick="login()">Login</button>
-  </div>
-
-  <p id="msg"></p>
-
-  <script>
-    async function register() {
-      const res = await fetch('/register', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: ruser.value,
-          password: rpass.value
-        })
-      });
-
-      msg.innerText = await res.text();
-    }
-
-    async function login() {
-      const res = await fetch('/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: luser.value,
-          password: lpass.value
-        })
-      });
-
-      const data = await res.json();
-
-      if (data.token) {
-        msg.innerText = "Login success 🚀";
-
-        if (data.admin) {
-          msg.innerText += " (ADMIN)";
-        }
-      } else {
-        msg.innerText = await res.text();
-      }
-    }
-  </script>
 </body>
 </html>
