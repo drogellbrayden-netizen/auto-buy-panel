@@ -1,56 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Nexaa Shop</title>
+  <title>Auto Buy Panel</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding-top: 60px;
+    }
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background: radial-gradient(circle at top, #1b1f3a, #0b0f1a);
-  color:white;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 6px;
+      border: none;
+    }
 
-.card{
-  background:rgba(255,255,255,0.06);
-  padding:40px;
-  border-radius:16px;
-  text-align:center;
-  width:320px;
-  box-shadow:0 0 30px rgba(0,0,0,0.4);
-}
+    button {
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
 
-.btn{
-  display:block;
-  margin:10px 0;
-  padding:12px;
-  background:#4c6fff;
-  color:white;
-  text-decoration:none;
-  border-radius:10px;
-  font-weight:bold;
-}
-
-.btn:hover{
-  background:#3a56d6;
-}
-</style>
-
+    .box {
+      margin: 20px auto;
+      width: 300px;
+      padding: 20px;
+      background: #1e293b;
+      border-radius: 10px;
+    }
+  </style>
 </head>
+
 <body>
+  <h1>Auto Buy Panel 🚀</h1>
 
-<div class="card">
-  <h1>🚀 Nexaa Shop</h1>
-  <p>Modern trading panel</p>
+  <div class="box">
+    <h2>Register</h2>
+    <input id="ruser" placeholder="username">
+    <input id="rpass" type="password" placeholder="password">
+    <button onclick="register()">Register</button>
+  </div>
 
-  <a class="btn" href="/login.html">Login</a>
-  <a class="btn" href="/register.html">Register</a>
-  <a class="btn" href="/products.html">Products</a>
-</div>
+  <div class="box">
+    <h2>Login</h2>
+    <input id="luser" placeholder="username">
+    <input id="lpass" type="password" placeholder="password">
+    <button onclick="login()">Login</button>
+  </div>
 
+  <p id="msg"></p>
+
+  <script>
+    async function register() {
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          username: ruser.value,
+          password: rpass.value
+        })
+      });
+
+      msg.innerText = await res.text();
+    }
+
+    async function login() {
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          username: luser.value,
+          password: lpass.value
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.token) {
+        msg.innerText = "Login success 🚀";
+
+        if (data.admin) {
+          msg.innerText += " (ADMIN)";
+        }
+      } else {
+        msg.innerText = await res.text();
+      }
+    }
+  </script>
 </body>
 </html>
