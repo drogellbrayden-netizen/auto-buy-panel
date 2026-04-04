@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:200px;
+  background:#11172a;
+  height:100vh;
+  padding:20px;
+}
+
+.sidebar a{
+  display:block;
+  margin:10px 0;
+  color:white;
+  text-decoration:none;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  padding:40px;
+}
+
+/* CARD */
+.card{
+  background:#141a2a;
+  padding:25px;
+  border-radius:12px;
+  width:300px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:none;
+  border-radius:6px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  background:#4c6fff;
+  border:none;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <a href="/login.html">Login</a>
+  <a href="/register.html">Register</a>
+  <a href="/products.html">Products</a>
+  <a href="/admin.html">Admin</a>
+</div>
+
+<div class="main">
+
+<!-- LOGIN -->
+<div id="loginBox" class="card">
+  <h2>Admin Login</h2>
+
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- PANEL -->
+<div id="panel" class="card" style="display:none;">
+  <h2>Add Balance</h2>
+
+  <input id="u2" placeholder="Username">
+  <input id="amt" placeholder="Amount">
+
+  <button onclick="add()">Add Balance</button>
+</div>
+
+</div>
+
+<script>
+async function login(){
+  const res = await fetch("/admin/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:document.getElementById("user").value,
+      password:document.getElementById("pass").value
+    })
+  });
+
+  const data = await res.json();
+
+  if(data.success){
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("panel").style.display = "block";
+  } else {
+    alert(data.error);
+  }
+}
+
+async function add(){
+  const res = await fetch("/admin/add",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:document.getElementById("u2").value,
+      amount:Number(document.getElementById("amt").value)
+    })
+  });
+
+  const data = await res.json();
+
+  if(data.success){
+    alert("Balance Added!");
+  } else {
+    alert(data.error);
+  }
+}
+</script>
+
+</body>
+</html>
