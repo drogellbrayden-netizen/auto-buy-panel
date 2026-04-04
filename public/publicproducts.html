@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Nexaa</title>
+<title>Products</title>
 
 <style>
 body{
@@ -31,22 +31,15 @@ body{
   padding:20px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
-  gap:20px;
-}
-
 .card{
   background:#141a2a;
   padding:20px;
   border-radius:10px;
-  text-align:center;
+  margin-bottom:20px;
 }
 
 button{
-  padding:8px;
-  width:100%;
+  padding:10px;
   background:#4c6fff;
   border:none;
   color:white;
@@ -65,49 +58,59 @@ button{
 
 <div class="main">
 
+<h2 id="bal">Balance: $0</h2>
+
 <h1>Products</h1>
-
-<div class="grid">
-
-  <div class="card">
-    <h3>Basic</h3>
-    <p>$10</p>
-    <button onclick="buy('Basic',10)">Buy</button>
-  </div>
-
-  <div class="card">
-    <h3>Pro</h3>
-    <p>$25</p>
-    <button onclick="buy('Pro',25)">Buy</button>
-  </div>
-
-</div>
+<div id="list"></div>
 
 </div>
 
 <script>
-async function buy(name, price){
-  const userId = localStorage.getItem("userId");
+const userId = localStorage.getItem("userId");
 
-  if(!userId){
-    alert("Login first");
-    return;
-  }
+async function loadBalance(){
+  const res = await fetch("/balance/" + userId);
+  const data = await res.json();
+  document.getElementById("bal").innerText = "Balance: $" + data.balance;
+}
 
+async function loadProducts(){
+  const res = await fetch("/products");
+  const products = await res.json();
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  products.forEach(p=>{
+    list.innerHTML += `
+      <div class="card">
+        <h3>${p.name}</h3>
+        <p>$${p.price}</p>
+        <button onclick="buy('${p._id}')">Buy</button>
+      </div>
+    `;
+  });
+}
+
+async function buy(id){
   const res = await fetch("/buy",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ userId, product:name, price })
+    body:JSON.stringify({ userId, productId:id })
   });
 
   const data = await res.json();
 
   if(data.success){
-    alert("Key: " + data.key + "\\nBalance: $" + data.balance);
+    alert("Key: " + data.key);
+    loadBalance();
   } else {
     alert(data.error);
   }
 }
+
+loadBalance();
+loadProducts();
 </script>
 
 </body>

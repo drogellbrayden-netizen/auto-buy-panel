@@ -5,6 +5,7 @@
 
 <style>
 body{
+  margin:0;
   font-family:Arial;
   background:#0b0f1a;
   color:white;
@@ -20,14 +21,27 @@ body{
 
 .main{
   flex:1;
-  padding:20px;
+  padding:40px;
 }
 
 .card{
   background:#141a2a;
   padding:20px;
   border-radius:10px;
-  width:300px;
+  margin-bottom:20px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+}
+
+button{
+  padding:10px;
+  background:#4c6fff;
+  border:none;
+  color:white;
 }
 </style>
 
@@ -43,16 +57,34 @@ body{
 
 <div id="loginBox" class="card">
   <h2>Admin Login</h2>
-  <input id="user"><br><br>
-  <input id="pass" type="password"><br><br>
+  <input id="user">
+  <input id="pass" type="password">
   <button onclick="login()">Login</button>
 </div>
 
-<div id="panel" class="card" style="display:none;">
-  <h2>Add Balance</h2>
-  <input id="u2"><br><br>
-  <input id="amt"><br><br>
-  <button onclick="add()">Add</button>
+<div id="panel" style="display:none;">
+
+<div class="card">
+  <h3>Add Balance</h3>
+  <input id="u2" placeholder="Username">
+  <input id="amt" placeholder="Amount">
+  <button onclick="addBalance()">Add</button>
+</div>
+
+<div class="card">
+  <h3>Create Product</h3>
+  <input id="pname" placeholder="Name">
+  <input id="price" placeholder="Price">
+  <button onclick="createProduct()">Create</button>
+</div>
+
+<div class="card">
+  <h3>Add Key</h3>
+  <input id="pid" placeholder="Product ID">
+  <input id="key" placeholder="Key">
+  <button onclick="addKey()">Add Key</button>
+</div>
+
 </div>
 
 </div>
@@ -78,8 +110,8 @@ async function login(){
   }
 }
 
-async function add(){
-  const res = await fetch("/admin/add",{
+async function addBalance(){
+  await fetch("/admin/add-balance",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
@@ -87,14 +119,31 @@ async function add(){
       amount:Number(amt.value)
     })
   });
+  alert("Done");
+}
 
-  const data = await res.json();
+async function createProduct(){
+  await fetch("/admin/create-product",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      name:pname.value,
+      price:Number(price.value)
+    })
+  });
+  alert("Product Created");
+}
 
-  if(data.success){
-    alert("Added!");
-  } else {
-    alert(data.error);
-  }
+async function addKey(){
+  await fetch("/admin/add-key",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      productId:pid.value,
+      key:key.value
+    })
+  });
+  alert("Key Added");
 }
 </script>
 

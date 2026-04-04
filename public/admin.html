@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Panel</title>
+<title>Admin</title>
 
 <style>
 body{
@@ -12,7 +12,6 @@ body{
   display:flex;
 }
 
-/* SIDEBAR */
 .sidebar{
   width:200px;
   background:#11172a;
@@ -20,76 +19,72 @@ body{
   padding:20px;
 }
 
-.sidebar a{
-  display:block;
-  margin:10px 0;
-  color:white;
-  text-decoration:none;
-}
-
-/* MAIN */
 .main{
   flex:1;
   padding:40px;
 }
 
-/* CARD */
 .card{
   background:#141a2a;
-  padding:25px;
-  border-radius:12px;
-  width:300px;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
 }
 
 input{
   width:100%;
   padding:10px;
   margin:10px 0;
-  border:none;
-  border-radius:6px;
 }
 
 button{
-  width:100%;
   padding:10px;
   background:#4c6fff;
   border:none;
   color:white;
-  border-radius:6px;
-  cursor:pointer;
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="sidebar">
-  <a href="/login.html">Login</a>
-  <a href="/register.html">Register</a>
   <a href="/products.html">Products</a>
-  <a href="/admin.html">Admin</a>
 </div>
 
 <div class="main">
 
-<!-- LOGIN -->
 <div id="loginBox" class="card">
   <h2>Admin Login</h2>
-
-  <input id="user" placeholder="Username">
-  <input id="pass" type="password" placeholder="Password">
-
+  <input id="user">
+  <input id="pass" type="password">
   <button onclick="login()">Login</button>
 </div>
 
-<!-- PANEL -->
-<div id="panel" class="card" style="display:none;">
-  <h2>Add Balance</h2>
+<div id="panel" style="display:none;">
 
+<div class="card">
+  <h3>Add Balance</h3>
   <input id="u2" placeholder="Username">
   <input id="amt" placeholder="Amount">
+  <button onclick="addBalance()">Add</button>
+</div>
 
-  <button onclick="add()">Add Balance</button>
+<div class="card">
+  <h3>Create Product</h3>
+  <input id="pname" placeholder="Name">
+  <input id="price" placeholder="Price">
+  <button onclick="createProduct()">Create</button>
+</div>
+
+<div class="card">
+  <h3>Add Key</h3>
+  <input id="pid" placeholder="Product ID">
+  <input id="key" placeholder="Key">
+  <button onclick="addKey()">Add Key</button>
+</div>
+
 </div>
 
 </div>
@@ -100,38 +95,55 @@ async function login(){
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
-      username:document.getElementById("user").value,
-      password:document.getElementById("pass").value
+      username:user.value,
+      password:pass.value
     })
   });
 
   const data = await res.json();
 
   if(data.success){
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("panel").style.display = "block";
+    loginBox.style.display="none";
+    panel.style.display="block";
   } else {
     alert(data.error);
   }
 }
 
-async function add(){
-  const res = await fetch("/admin/add",{
+async function addBalance(){
+  await fetch("/admin/add-balance",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
-      username:document.getElementById("u2").value,
-      amount:Number(document.getElementById("amt").value)
+      username:u2.value,
+      amount:Number(amt.value)
     })
   });
+  alert("Done");
+}
 
-  const data = await res.json();
+async function createProduct(){
+  await fetch("/admin/create-product",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      name:pname.value,
+      price:Number(price.value)
+    })
+  });
+  alert("Product Created");
+}
 
-  if(data.success){
-    alert("Balance Added!");
-  } else {
-    alert(data.error);
-  }
+async function addKey(){
+  await fetch("/admin/add-key",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      productId:pid.value,
+      key:key.value
+    })
+  });
+  alert("Key Added");
 }
 </script>
 
