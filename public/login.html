@@ -10,51 +10,80 @@ body{
   background:#0b0f1a;
   color:white;
   display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
 }
 
+/* SIDEBAR */
+.sidebar{
+  width:200px;
+  background:#11172a;
+  height:100vh;
+  padding:20px;
+}
+
+.sidebar a{
+  display:block;
+  margin:10px 0;
+  color:white;
+  text-decoration:none;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* CARD */
 .card{
   background:#141a2a;
   padding:30px;
-  border-radius:12px;
+  border-radius:10px;
   width:300px;
   text-align:center;
 }
 
 input{
   width:100%;
-  margin:8px 0;
   padding:10px;
-  border-radius:8px;
+  margin:10px 0;
   border:none;
-  outline:none;
+  border-radius:6px;
 }
 
 button{
   width:100%;
   padding:10px;
-  margin-top:10px;
   background:#4c6fff;
   border:none;
   color:white;
-  border-radius:8px;
+  border-radius:6px;
   cursor:pointer;
 }
 </style>
-
 </head>
 
 <body>
 
+<div class="sidebar">
+  <a href="/login.html">Login</a>
+  <a href="/register.html">Register</a>
+  <a href="/products.html">Products</a>
+  <a href="/admin.html">Admin</a>
+</div>
+
+<div class="main">
+
 <div class="card">
   <h2>Login</h2>
 
-  <input id="u" placeholder="username">
-  <input id="p" type="password" placeholder="password">
+  <input id="u" placeholder="Username">
+  <input id="p" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
+</div>
+
 </div>
 
 <script>
@@ -63,17 +92,17 @@ async function login(){
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
-      username:u.value,
-      password:p.value
+      username:document.getElementById("u").value,
+      password:document.getElementById("p").value
     })
   });
 
   const data = await res.json();
 
-  if(data.token){
-    localStorage.setItem("token",data.token);
-    localStorage.setItem("userId",data.userId);
-    window.location="/dashboard.html";
+  if(data.userId){
+    localStorage.setItem("userId", data.userId);
+    alert("Logged in!");
+    window.location = "/products.html";
   } else {
     alert(data.error);
   }
